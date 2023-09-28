@@ -33,4 +33,17 @@ public class EmployeeController {
                 .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id :" + id));
         return ResponseEntity.ok(employee);
     }
+
+    @PutMapping("/employees/{id}")
+    public ResponseEntity<Employee> updateEmployee(@PathVariable Integer id, @RequestBody Employee employeeDetails){
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id :" + id));
+
+        employee.setName(employeeDetails.getName());
+        employee.setAddress(employeeDetails.getAddress());
+        employee.setContact(employeeDetails.getContact());
+
+        Employee updatedEmployee = employeeRepository.save(employee);
+        return ResponseEntity.ok(updatedEmployee);
+    }
 }
